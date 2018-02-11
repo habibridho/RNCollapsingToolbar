@@ -41,11 +41,19 @@ export default class App extends Component {
       outputRange: [0, 1],
       extrapolate: 'clamp'
     });
+    const heroTitleOpacity = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    });
+
+    const headerTitle = 'HEADER'
 
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.header, { height: headerHeight }]}>
-          <Animated.Text style={{textAlign: 'center', fontSize: 18, color: 'black', marginTop: 28, opacity: headerTitleOpacity}}>Header</Animated.Text>
+          <Animated.Text style={{textAlign: 'center', fontSize: 18, color: 'black', marginTop: 28, opacity: headerTitleOpacity}}>{headerTitle}</Animated.Text>
+          <Animated.Text style={{textAlign: 'center', fontSize: 32, color: 'black', position: 'absolute', bottom: 16, left: 16, opacity: heroTitleOpacity}}>{headerTitle}</Animated.Text>
         </Animated.View>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
@@ -57,8 +65,7 @@ export default class App extends Component {
               }
             }])
           }
-          scrollEventThrottle={16}
-        >
+          scrollEventThrottle={16}>
           <Text style={styles.title}>This is Title</Text>
           <Text style={styles.content}>{str}</Text>
         </ScrollView>
