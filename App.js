@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import {
+  Animated,
   Platform,
   ScrollView,
   StyleSheet,
@@ -14,21 +15,40 @@ import {
 } from 'react-native';
 import str from './content';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+const HEADER_EXPANDED_HEIGHT = 300;
+const HEADER_COLLAPSED_HEIGHT = 60;
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      scrollY: new Animated.Value(0)
+    }
+  }
+
   render() {
+    const headerHeight = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT],
+      outputRange: [HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT],
+      extrapolate: 'clamp'
+    });
+
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-        </View>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Animated.View style={[styles.header, { height: headerHeight }]}/>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          onScroll={Animated.event(
+            [{ nativeEvent: {
+                contentOffset: {
+                  y: this.state.scrollY
+                }
+              }
+            }])
+          }
+          scrollEventThrottle={16}
+        >
           <Text style={styles.title}>This is Title</Text>
           <Text style={styles.content}>{str}</Text>
         </ScrollView>
@@ -46,8 +66,7 @@ const styles = StyleSheet.create({
     padding: 16
   },
   header: {
-    backgroundColor: 'lightblue',
-    height: 300
+    backgroundColor: 'lightblue'
   },
   title: {
     marginVertical: 16,
