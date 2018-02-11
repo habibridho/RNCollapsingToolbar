@@ -36,10 +36,17 @@ export default class App extends Component {
       outputRange: [HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT],
       extrapolate: 'clamp'
     });
+    const headerTitleOpacity = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT],
+      outputRange: [0, 1],
+      extrapolate: 'clamp'
+    });
 
     return (
       <View style={styles.container}>
-        <Animated.View style={[styles.header, { height: headerHeight }]}/>
+        <Animated.View style={[styles.header, { height: headerHeight }]}>
+          <Animated.Text style={{textAlign: 'center', fontSize: 18, color: 'black', marginTop: 28, opacity: headerTitleOpacity}}>Header</Animated.Text>
+        </Animated.View>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           onScroll={Animated.event(
