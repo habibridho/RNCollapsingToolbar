@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   Animated,
+  Dimensions,
   Platform,
   ScrollView,
   StyleSheet,
@@ -17,6 +18,8 @@ import str from './content';
 
 const HEADER_EXPANDED_HEIGHT = 300;
 const HEADER_COLLAPSED_HEIGHT = 60;
+
+const { width: SCREEN_WIDTH } = Dimensions.get("screen")
 
 export default class App extends Component {
   constructor() {
@@ -63,10 +66,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#eaeaea',
   },
   scrollContainer: {
-    padding: 16
+    padding: 16,
+    paddingTop: HEADER_EXPANDED_HEIGHT
   },
   header: {
-    backgroundColor: 'lightblue'
+    backgroundColor: 'lightblue',
+    position: 'absolute',
+    width: SCREEN_WIDTH,
+    top: 0,
+    left: 0,
+    zIndex: 9999
   },
   title: {
     marginVertical: 16,
